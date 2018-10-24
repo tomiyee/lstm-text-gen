@@ -74,8 +74,6 @@ if __name__ == "__main__":
        elif opt in ("-l", "--load_model"):
            load_file = ast.literal_eval(arg)
 
-print(dataset_path)
-sys.exit()
 # ===========================================================
 with io.open(dataset_path, encoding='utf-8') as f:
     text = f.read().lower()
@@ -139,11 +137,11 @@ def sample(preds, temperature=1.0):
 def on_epoch_end(epoch, _):
 
     # Checkpointing the model
-    print("Checkpointing the model...")
-    model.save("checkpoint.h5")
-    model.save_weights('checkpoint_w.h5')
-
-    # Function invoked at end of each epoch. Prints generated text.
+    for i in checkpoints:
+        if epoch + 1 == i:
+            print("Checkpointing the model...")
+            model.save("checkpoint-%d.h5" % i)
+    
     print()
     print('----- Generating text after Epoch: %d' % epoch)
 
@@ -186,6 +184,6 @@ model.fit(x, y,
           epochs=num_epochs,
           callbacks=[print_callback])
 
-print("Source: \"%s\" \nEpochs: %d \nBatch Size: %d \nStep Size: %d \n Look Back: %d" % (path, num_epochs, batch_size, step, maxlen))
+print("Source: \"%s\" \nEpochs: %d \nBatch Size: %d \nStep Size: %d \n Look Back: %d" % (dataset_path, num_epochs, batch_size, step_size, maxlen))
 
 # ===========================================================
