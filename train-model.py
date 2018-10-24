@@ -33,6 +33,7 @@ dataset_path = "./datasets/nancy-drew-1-secret-of-old-clock.txt"
 load_file = False
 load_path = "./checkpoint.h5"
 save_path = "./"
+file_name = "checkpoint"
 
 num_epochs = 5
 checkpoints = list(range(num_epochs))
@@ -45,7 +46,7 @@ if __name__ == "__main__":
    argv = sys.argv[1:]
 
    try:
-       opts, args = getopt.getopt(argv,"hd:c:e:l:",["dataset=","checkpoints=","epochs=","load_model="])
+       opts, args = getopt.getopt(argv,"hd:c:e:l:n:",["dataset=","checkpoints=","epochs=","load_model=","name="])
    except getopt.GetoptError:
        print ('test.py -i <inputfile> -o <outputfile>')
        sys.exit(2)
@@ -73,6 +74,9 @@ if __name__ == "__main__":
        # Load Model
        elif opt in ("-l", "--load_model"):
            load_file = ast.literal_eval(arg)
+
+       elif opt in ("-n", "--name"):
+           file_name = arg
 
 # ===========================================================
 with io.open(dataset_path, encoding='utf-8') as f:
@@ -140,7 +144,7 @@ def on_epoch_end(epoch, _):
     for i in checkpoints:
         if epoch + 1 == i:
             print("Checkpointing the model...")
-            model.save("checkpoint-%d.h5" % i)
+            model.save("%s-%d.h5" % (file_name,i))
     
     print()
     print('----- Generating text after Epoch: %d' % epoch)
