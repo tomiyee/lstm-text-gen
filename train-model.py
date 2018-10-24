@@ -37,7 +37,7 @@ save_path = "./"
 num_epochs = 5
 checkpoints = list(range(num_epochs))
 batch_size = 256
-look_back = 60
+look_back = 80
 step_size = 2
 
 # Takes Command line inputs to override the above
