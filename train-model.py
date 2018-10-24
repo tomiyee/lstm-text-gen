@@ -77,7 +77,7 @@ if __name__ == "__main__":
    main(sys.argv[1:])
 
 
-
+sys.exit()
 # ===========================================================
 with io.open(dataset_path, encoding='utf-8') as f:
     text = f.read().lower()
@@ -95,7 +95,7 @@ indices_char = dict((i, c) for i, c in enumerate(chars))
 maxlen = look_back
 sentences = []
 next_chars = []
-for i in range(0, len(text) - maxlen, step):
+for i in range(0, len(text) - maxlen, step_size):
     sentences.append(text[i: i + maxlen])
     next_chars.append(text[i + maxlen])
 print('nb sequences:', len(sentences))
