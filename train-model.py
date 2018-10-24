@@ -41,42 +41,40 @@ look_back = 60
 step_size = 2
 
 # Takes Command line inputs to override the above
-
-def main(argv):
-    try:
-        opts, args = getopt.getopt(argv,"hd:c:e:l:",["dataset=","checkpoints=","epochs=","load_model="])
-    except getopt.GetoptError:
-        print ('test.py -i <inputfile> -o <outputfile>')
-        sys.exit(2)
-
-    for opt, arg in opts:
-
-        # Help Command
-        if opt == '-h':
-            print ('test.py -l <pathtosaved> -s <pathtosave>')
-            sys.exit()
-
-        # Num Epochs
-        elif opt in ("-e","--epochs"):
-            num_epochs = ast.literal_eval(arg)
-            checkpoints = list(range(num_epochs))
-
-        # Dataset Name
-        elif opt in ("-d", "--dataset"):
-            dataset_path = "./datasets/" + arg
-
-        # Checkpoints
-        elif opt in ("-c", "--checkpoints"):
-            checkpoints = ast.literal_eval(arg)
-
-        # Load Model
-        elif opt in ("-l", "--load_model"):
-            load_file = ast.literal_eval(arg)
-
 if __name__ == "__main__":
-   main(sys.argv[1:])
+   argv = sys.argv[1:]
 
+   try:
+       opts, args = getopt.getopt(argv,"hd:c:e:l:",["dataset=","checkpoints=","epochs=","load_model="])
+   except getopt.GetoptError:
+       print ('test.py -i <inputfile> -o <outputfile>')
+       sys.exit(2)
 
+   for opt, arg in opts:
+
+       # Help Command
+       if opt == '-h':
+           print ('test.py -l <pathtosaved> -s <pathtosave>')
+           sys.exit()
+
+       # Num Epochs
+       elif opt in ("-e","--epochs"):
+           num_epochs = ast.literal_eval(arg)
+           checkpoints = list(range(num_epochs))
+
+       # Dataset Name
+       elif opt in ("-d", "--dataset"):
+           dataset_path = "./datasets/" + arg
+
+       # Checkpoints
+       elif opt in ("-c", "--checkpoints"):
+           checkpoints = ast.literal_eval(arg)
+
+       # Load Model
+       elif opt in ("-l", "--load_model"):
+           load_file = ast.literal_eval(arg)
+
+print(dataset_path)
 sys.exit()
 # ===========================================================
 with io.open(dataset_path, encoding='utf-8') as f:
