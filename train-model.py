@@ -58,7 +58,7 @@ def main(argv):
 
         # Num Epochs
         elif opt in ("-e","--epochs"):
-            num_epochs = arg
+            num_epochs = ast.literal_eval(arg)
             checkpoints = list(range(num_epochs))
 
         # Dataset Name
