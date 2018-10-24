@@ -28,7 +28,7 @@ from pathlib import Path
 # ===========================================================
 
 # parameters
-dataset_path = "./datasets/harry-potter-1-2-4.txt"
+dataset_path = "./datasets/nancy-drew-1-secret-of-old-clock.txt"
 
 load_file = False
 load_path = "./checkpoint.h5"
@@ -37,8 +37,8 @@ save_path = "./"
 num_epochs = 5
 checkpoints = list(range(num_epochs))
 batch_size = 256
-look_back = 80
-step_size = 2
+look_back = 40
+step_size = 1
 
 # Takes Command line inputs to override the above
 if __name__ == "__main__":
