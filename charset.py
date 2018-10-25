@@ -36,10 +36,18 @@ print('corpus length:', len(text))
 
 chars = sorted(list(set(text)))
 print('total chars:', len(chars))
+
+# Chars
+for i in range(len(chars)):
+    if (chars[i] == '\n'):
+        chars[i] = '\\n'
+    if (chars[i] == '"'):
+        chars[i] = '\\"'
+
 char_indices = dict((c, i) for i, c in enumerate(chars))
 indices_char = dict((i, c) for i, c in enumerate(chars))
 
-f = open("charset.txt","w+")
+f = open(file_name + ".txt","w+")
 charset = '["'+ '","'.join(chars) + '"]'
 f.write(charset)
 f.close()
