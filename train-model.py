@@ -79,6 +79,7 @@ if __name__ == "__main__":
            file_name = arg
 
 # ===========================================================
+
 with io.open(dataset_path, encoding='utf-8') as f:
     text = f.read().lower()
 print('corpus length:', len(text))
@@ -88,6 +89,21 @@ print('total chars:', len(chars))
 char_indices = dict((c, i) for i, c in enumerate(chars))
 indices_char = dict((i, c) for i, c in enumerate(chars))
 
+# Outputs a charset
+charset = sorted(list(set(text)))
+# Make char's JS Readable
+for i in range(len(charset)):
+    if (charset[i] == '\n'):
+        charset[i] = '\\n'
+    if (charset[i] == '"'):
+        charset[i] = '\\"'
+# Generates the charset file
+f = open(file_name + ".txt","w+")
+charset_final = '["'+ '","'.join(charset) + '"]'
+f.write(charset_final)
+f.close()
+
+print (charset_final)
 
 # ===========================================================
 
