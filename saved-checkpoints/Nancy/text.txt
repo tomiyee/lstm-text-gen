@@ -1,0 +1,10 @@
+Dataset:
+Nancy drew secret of the old clock
+
+Look back: 40
+
+Losses at Epoch #:
+1	2.0013
+5	??? Terminal Log didn't go back far enough
+20	1.1482
+40	1.0806
