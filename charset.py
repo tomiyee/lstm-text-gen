@@ -1,6 +1,10 @@
 
 import io
+import sys
+import getopt
 
+dataset_path = "./datasets/harry-potter-1"
+file_name = "charset"
 
 # Takes Command line inputs to override the above
 if __name__ == "__main__":
@@ -23,10 +27,10 @@ if __name__ == "__main__":
        elif opt in ("-d", "--dataset"):
            dataset_path = "./datasets/" + arg
 
-# parameters
-data_path = "./datasets/harry-potter-1-2-4.txt"
+       elif opt in ("-n", "--name"):
+           file_name = arg + "-charset"
 
-with io.open(data_path, encoding='utf-8') as f:
+with io.open(dataset_path, encoding='utf-8') as f:
     text = f.read().lower()
 print('corpus length:', len(text))
 
