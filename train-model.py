@@ -41,8 +41,6 @@ batch_size = 256
 look_back = 40
 step_size = 1
 
-losses = []
-
 # Takes Command line inputs to override the above
 if __name__ == "__main__":
     argv = sys.argv[1:]
@@ -164,9 +162,6 @@ def on_epoch_end(epoch, _):
         if epoch + 1 == i:
             print("Checkpointing the model...")
             model.save("%s-%d.h5" % (file_name,i))
-            l = model.evaluate(x,y,verbose=0, steps=3)
-            losses.append(l)
-            print(l)
     print()
     print('----- Generating text after Epoch: %d' % epoch)
 
@@ -206,16 +201,6 @@ model.fit(x, y,
           batch_size=batch_size,
           epochs=num_epochs,
           callbacks=[print_callback])
-
-# Generates the charset file
-f = open(file_name + "-losses.txt","w+")
-charset_final = '["'+ '","'.join(charset) + '"]'
-for i in range(len(losses)):
-    f.write("Epoch %d:  %d" %(checkpoints[i],losses[i]))
-f.close()
-
-
-
 
 print("Source: \"%s\" \nEpochs: %d \nBatch Size: %d \nStep Size: %d \n Look Back: %d" % (dataset_path, num_epochs, batch_size, step_size, maxlen))
 
