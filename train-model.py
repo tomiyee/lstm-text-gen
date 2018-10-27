@@ -73,7 +73,8 @@ if __name__ == "__main__":
 
        # Load Model
        elif opt in ("-l", "--load_model"):
-           load_file = ast.literal_eval(arg)
+           load_file = True
+           load_file = arg
 
        elif opt in ("-n", "--name"):
            file_name = arg
@@ -98,7 +99,7 @@ for i in range(len(charset)):
     if (charset[i] == '"'):
         charset[i] = '\\"'
 # Generates the charset file
-f = open(file_name + ".txt","w+")
+f = open(file_name + "-charset.txt","w+")
 charset_final = '["'+ '","'.join(charset) + '"]'
 f.write(charset_final)
 f.close()
