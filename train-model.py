@@ -41,43 +41,45 @@ batch_size = 256
 look_back = 40
 step_size = 1
 
+losses = []
+
 # Takes Command line inputs to override the above
 if __name__ == "__main__":
-   argv = sys.argv[1:]
+    argv = sys.argv[1:]
 
-   try:
-       opts, args = getopt.getopt(argv,"hd:c:e:l:n:",["dataset=","checkpoints=","epochs=","load_model=","name="])
-   except getopt.GetoptError:
-       print ('test.py -i <inputfile> -o <outputfile>')
-       sys.exit(2)
+    try:
+        opts, args = getopt.getopt(argv,"hd:c:e:l:n:",["dataset=","checkpoints=","epochs=","load_model=","name="])
+    except getopt.GetoptError:
+        print ('train-model.py -d <dataset> -c <epochs to checkpoint> -e <# epochs> -l <model to load from> -n <name of files>')
+        sys.exit(2)
 
-   for opt, arg in opts:
+    for opt, arg in opts:
 
-       # Help Command
-       if opt == '-h':
-           print ('test.py -l <pathtosaved> -s <pathtosave>')
-           sys.exit()
+        # Help Command
+        if opt == '-h':
+            print ('train-model.py -d <dataset> -c <epochs to checkpoint> -e <# epochs> -l <model to load from> -n <name of files>')
+            sys.exit()
 
-       # Num Epochs
-       elif opt in ("-e","--epochs"):
-           num_epochs = ast.literal_eval(arg)
-           checkpoints = list(range(num_epochs))
+        # Num Epochs
+        elif opt in ("-e","--epochs"):
+            num_epochs = ast.literal_eval(arg)
+            checkpoints = list(range(num_epochs))
 
-       # Dataset Name
-       elif opt in ("-d", "--dataset"):
-           dataset_path = "./datasets/" + arg
+        # Dataset Name
+        elif opt in ("-d", "--dataset"):
+            dataset_path = arg
 
-       # Checkpoints
-       elif opt in ("-c", "--checkpoints"):
-           checkpoints = ast.literal_eval(arg)
+        # Checkpoints
+        elif opt in ("-c", "--checkpoints"):
+            checkpoints = ast.literal_eval(arg)
 
-       # Load Model
-       elif opt in ("-l", "--load_model"):
-           load_file = True
-           load_file = arg
+        # Load Model
+        elif opt in ("-l", "--load_model"):
+            load_file = True
+            load_file = arg
 
-       elif opt in ("-n", "--name"):
-           file_name = arg
+        elif opt in ("-n", "--name"):
+            file_name = arg
 
 # ===========================================================
 
@@ -162,7 +164,9 @@ def on_epoch_end(epoch, _):
         if epoch + 1 == i:
             print("Checkpointing the model...")
             model.save("%s-%d.h5" % (file_name,i))
-    
+            l = model.evaluate(x,y,verbose=0, steps=3)
+            losses.append(l)
+            print(l)
     print()
     print('----- Generating text after Epoch: %d' % epoch)
 
@@ -198,12 +202,20 @@ print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
 
 # ===========================================================
 
-
-
 model.fit(x, y,
           batch_size=batch_size,
           epochs=num_epochs,
           callbacks=[print_callback])
+
+# Generates the charset file
+f = open(file_name + "-losses.txt","w+")
+charset_final = '["'+ '","'.join(charset) + '"]'
+for i in range(len(losses)):
+    f.write("Epoch %d:  %d" %(checkpoints[i],losses[i]))
+f.close()
+
+
+
 
 print("Source: \"%s\" \nEpochs: %d \nBatch Size: %d \nStep Size: %d \n Look Back: %d" % (dataset_path, num_epochs, batch_size, step_size, maxlen))
 
