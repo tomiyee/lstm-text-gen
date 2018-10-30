@@ -100,7 +100,7 @@ for i in range(len(charset)):
         charset[i] = '\\"'
 # Generates the charset file
 f = open(file_name + "-charset.txt","w+")
-charset_final = '["'+ '","'.join(charset) + '"]'
+charset_final = '["'+ '", "'.join(charset) + '"]'
 f.write(charset_final)
 f.close()
 
