@@ -13,13 +13,15 @@ from pickle import dump
 
 import numpy as np
 import random
+from random import randint
 import sys
 import io, getopt, ast
 from pathlib import Path
 
-# ===================================================
+# ===================================================================
 # parameters
 
+# This is the file with the pre separated lines of 51 words
 dataset_path = "./harry-potter.txt"
 
 load_file = False
@@ -30,10 +32,13 @@ file_name = "checkpoint"
 num_epochs = 5
 checkpoints = list(range(num_epochs))
 batch_size = 256
-look_back = 40
 step_size = 1
+words_to_generate = 60
 
+input_size = 50
+output_size = 1
 
+# ===================================================================
 # Takes Command line inputs to override the above
 if __name__ == "__main__":
     argv = sys.argv[1:]
@@ -64,15 +69,10 @@ if __name__ == "__main__":
         elif opt in ("-c", "--checkpoints"):
             checkpoints = ast.literal_eval(arg)
 
-        # Load Model
-        elif opt in ("-l", "--load_model"):
-            load_file = True
-            load_file = arg
-
         elif opt in ("-n", "--name"):
             file_name = arg
 
-# ===================================================
+# ===================================================================
 # Load The Model
 
 # load the model
@@ -80,8 +80,9 @@ model = load_model('model.h5')
 # load the tokenizer
 tokenizer = load(open('tokenizer.pkl', 'rb'))
 
-# ===================================================
-# load doc into memory
+# ===================================================================
+# Load the Dataset with the lines
+
 def load_doc(filename):
     # open the file as read only
     file = open(filename, 'r')
@@ -91,14 +92,12 @@ def load_doc(filename):
     file.close()
     return text
 
-# load
-in_filename = 'harry-potter.txt'
-doc = load_doc(in_filename)
+doc = load_doc(dataset_path)
 lines = doc.split('\n')
 
-# integer encode sequences of words
-tokenizer = Tokenizer()
-tokenizer.fit_on_texts(lines)
+# ===================================================================
+# Use the tokenizer we just loaded to prepare the sequences we're using
+    
 sequences = tokenizer.texts_to_sequences(lines)
 
 # vocabulary size
@@ -107,30 +106,14 @@ print("Vocab Size: %d" % vocab_size)
 
 # separate into input and output
 sequences = array(sequences)
+
 X, y = sequences[:,:-1], sequences[:,-1]
 y = to_categorical(y, num_classes=vocab_size)
 seq_length = X.shape[1]
 
 
-# ===================================================
-# Define the Callback Function
-
-def on_epoch_end (epoch, _):
-    
-    # Checkpointing the model
-    for i in checkpoints:
-        if epoch + 1 == i:
-            print("Checkpointing the model...")
-            model.save("%s.h5" % (file_name))
-    print("Generating Text...")
-    print(generate_text())
-    
-print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
-
-
-# ===================================================
-
-from random import randint
+# ===================================================================
+# Define function to define the generated text
 
 def generate_text():
     
@@ -138,7 +121,7 @@ def generate_text():
     # select a seed text
     seed_text = lines[randint(0,len(lines))]
     
-    for i in range(40):
+    for i in range(words_to_generate):
         # encode the seed text
         encoded = tokenizer.texts_to_sequences([seed_text])[0]
         # truncate sequences to a fixed length
@@ -158,7 +141,26 @@ def generate_text():
         result.append(out_word)
     return ' '.join(result)
 
+# ===================================================================
+# Define the Callback Function
 
-# ===================================================
+def on_epoch_end (epoch, _):
+    
+    # Checkpointing the model
+    for i in checkpoints:
+        if epoch + 1 == i:
+            print("Checkpointing the model...")
+            model.save("%s.h5" % (file_name))
+    print("Generating Text...")
+    print(generate_text())
+    
+print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
+
+
+# ===================================================================
 # Fit Model
+
 model.fit(X, y, batch_size=batch_size, epochs=num_epochs, callbacks=[print_callback])
+
+print("Saving the Final Model...")
+model.save("%s.h5" % (file_name))
