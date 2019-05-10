@@ -1,0 +1,9 @@
+Dataset:
+Alice in Wonderland
+
+Look back: 40
+
+Losses at Epoch #:
+1	2.0069
+5	1.3181
+20	1.1034

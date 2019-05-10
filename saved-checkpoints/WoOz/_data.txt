@@ -1,9 +1,0 @@
-Dataset:
-Wizard of Oz
-
-Look back: 40
-
-Losses at Epoch #:
-1	1.8644
-5	1.1814
-20	1.0268

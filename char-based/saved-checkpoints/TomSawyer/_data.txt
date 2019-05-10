@@ -1,0 +1,10 @@
+Dataset:
+Tom Sawyer
+
+Look back: 40
+
+Losses at Epoch #:
+1	???
+5	???
+10	1.2637
+20	1.1889
