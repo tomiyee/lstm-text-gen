@@ -191,6 +191,7 @@ def on_epoch_end(epoch, _):
 
         sys.stdout.write(next_char)
         sys.stdout.flush()
+        
     '''
     print('----- Generating text after Epoch: %d' % epoch)
 
@@ -228,6 +229,12 @@ print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
 
 # ===========================================================
 
+# checks if the checkpoints array says to checkpoint initial model
+if 0 in checkpoints:
+    print("Checkpointing the model...")
+    model.save("%s-%d.h5" % (file_name,0))
+
+# begin the training process    
 model.fit(x, y,
           batch_size=batch_size,
           epochs=num_epochs,
