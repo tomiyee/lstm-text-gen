@@ -6,6 +6,8 @@ The first approach used a char-based model that generated one character at a tim
 
 In an attempt to speed up the text generation, the second approach used a word-based model that generated full words at a time. This model worked very similarly to the one above. It would generate a word, append it to the seed text, and  attempt to predict the next word. Whenever the model encounters a word it has not seen before, it seems to skip over that word. This means that it may be necessary to add some level of buffer before the provided seed text so that the model will get seed text of the expected length or greater.
 
+The third approach strayed away from LSTM models and implemented a Maximum Likelihood Character Level Language Model. Because this model is essentially only a Python dictionary, this model is incredibly fast at generating text, and only takes a few seconds to generate text that is a couple thousand characters long.
+
 ## The Char-Based Text Generator
 
 This char-based model is based on the Keras example project given [here](https://github.com/keras-team/keras/blob/master/examples/lstm_text_generation.py).
