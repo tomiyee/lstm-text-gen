@@ -16,7 +16,14 @@ For more detail, see the python notebook in the char-based folder.
 
 The word-based is model is based on the work of Jason Brownlee given [here](https://machinelearningmastery.com/how-to-develop-a-word-level-neural-language-model-in-keras/).
 
-For more detail, see the python notebook in the word-based folder here. 
+For more detail, see the python [notebook](https://github.com/tomiyee/lstm-text-gen/blob/master/word-based/01-Word-Based-LSTM.ipynb) in the word-based folder. 
+
+## Maximum Likelihood Character Level Language Model
+
+This model doesn't use machine learning to generate text. Instead, it scans the entire corpus and tracks the frequency of any given character going after the previous *n* characters. The larger the value of *n*, the more the generated text will resemble the original corpus. A useful property of this model is that the words that it generates will almost always be spelled correctly with an appropriately large value *n*. 
+
+For more detail, see this wonderfully written [notebook](https://nbviewer.jupyter.org/gist/yoavg/d76121dfde2618422139?utm_content=bufferefcf2&utm_medium=social&utm_source=plus.google.com&utm_campaign=buffer) by Yoav Goldberg. 
+
 
 ## Converting Keras Models to Tensorflow.js Models
 
