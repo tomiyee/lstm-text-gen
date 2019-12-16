@@ -47,7 +47,7 @@ Send2Trash==1.5.0
 six==1.11.0
 tb-nightly==1.14.0a20190614
 tensorboard==1.14.0
-tensorflow==1.14.0
+tensorflow==1.15.0
 tensorflow-estimator==1.14.0
 tensorflow-estimator-2.0-preview==1.14.0.dev2019061400
 tensorflow-hub==0.3.0
